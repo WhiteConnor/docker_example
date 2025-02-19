@@ -29,10 +29,10 @@ print("Ships:")
 # Iterate through each starship and subsequent pilot
 for starship in starships_data:
     pilots_list = starship['pilots']
-    print("- " + starship['name'])
+    print("└─ " + starship['name'])
     for pilot_url in pilots_list:
         pilot_name = fetch_data(pilot_url)['name']
-        print("   |- " + pilot_name)
+        print("   └─ " + pilot_name)
 
 
 
