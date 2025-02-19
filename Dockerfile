@@ -1,5 +1,9 @@
-# Use the official Python image from the Docker Hub
-FROM python:3.9-slim
+# Use the latest Ubuntu image as the base
+FROM ubuntu:latest
+
+# Update and install Python and necessary development tools
+RUN apt-get update && \
+  apt-get install -y python3 python3-pip python3-setuptools python3-dev python3-wheel
 
 # Set the working directory in the container
 WORKDIR /app
@@ -8,10 +12,10 @@ WORKDIR /app
 COPY requirements.txt /app/
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+RUN apt-get install -y $(grep -Eo '^\S+' requirements.txt | xargs)
 
 # Copy the current directory contents into the container at /app
 COPY . /app
 
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD ["python3", "app.py"]
