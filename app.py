@@ -1,6 +1,4 @@
 import requests
-import pandas as pd
-import numpy as np
 
 # Function to fetch data from the SWAPI
 def fetch_data(endpoint):
@@ -13,24 +11,29 @@ def fetch_data(endpoint):
 # Fetch starships data
 starships_data = fetch_data('starships')
 
-# Initialize an empty list to store starship and pilot information
-starships_pilots = []
+# Initialize empty lists to store starship and pilot information
+ships = []
+pilots = []
 
 # Iterate over each starship and retrieve pilot information
 for starship in starships_data:
-    starship_name = starship['name']
-    pilots = starship['pilots']
-    pilot_names = []
-    for pilot_url in pilots:
+    ships.append(starship['name'])
+    pilots_List = starship['pilots']
+    # Iterate over each pilot and append pilot name to pilots
+    for pilot_url in pilots_List:
         pilot_response = requests.get(pilot_url)
         pilot_data = pilot_response.json()
-        pilot_names.append(pilot_data['name'])
-    starships_pilots.append({'starship': starship_name, 'pilots': pilot_names})
+        pilots.append(pilot_data['name'])
 
-# Create a DataFrame from the starships and pilots data
-df_starships_pilots = pd.DataFrame(starships_pilots)
+print("Starships:")
+for ship in ships:
+    print(" " + ship)
+print()
 
-print(df_starships_pilots.pilots.sum())
+pilots_print = "Pilots:\n"
+for pilot in pilots:
+    pilots_print += " " + pilot + "\n"
+print(pilots_print)
 
 # sudo docker build -t python-docker-app .
 # sudo docker run -p 4000:80 python-docker-app
